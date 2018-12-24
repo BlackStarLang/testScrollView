@@ -62,8 +62,11 @@
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return self.view.frame.size.height - 100;
+    /*
+     cell 的高度一定要比子视图大，也就是比containerView 的frame大，
+     不大的话会有问题，scrollViewDidScroll会不停的走
+     */
+    return self.view.frame.size.height;
 }
 
 
@@ -74,7 +77,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         
         [self addChildViewController:self.tbVC];
-        self.tbVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 100);
+        self.tbVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height -120 );
         [cell.contentView addSubview:self.containerView];
         [self.containerView addSubview:self.tbVC.view];
     }
@@ -130,11 +133,12 @@
 -(BSTableView *)tableView{
     
     if (!_tableView) {
-        _tableView = [[BSTableView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height - 30)];
+        _tableView = [[BSTableView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height + 64 )];
         _tableView.tableFooterView = [[UIView alloc]init];
         _tableView.delegate = self;
         _tableView.dataSource = self;
         _tableView.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
+        _tableView.backgroundColor = [UIColor redColor];
     }
     return _tableView;
 }
@@ -149,7 +153,7 @@
 -(UIScrollView *)containerView{
     
     if (!_containerView ) {
-        _containerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 200)];
+        _containerView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 120)];
     }
     return _containerView;
 }
